@@ -1,6 +1,6 @@
 import tkinter as tk
 import numpy as np
-
+from creds import api_Key, api_Name
 
 class TicTacToe:
     def __init__(self, master):
@@ -34,10 +34,17 @@ class TicTacToe:
             self.label.config(text="Player 1's turn" if self.turn == 1 else "Player 2's turn")
             winner = self.check_winner()
             if winner != 0:
-                self.label.config(text="Player 1 wins!" if winner == 1 else "Player 2 wins!")
+                if winner == 1:
+                    self.label.config(text="Player 1 wins!")
+                elif winner ==2:
+                    self.label.config(text="Player 2 wins!")
+                else:
+                    self.label.config(text="Draw")
                 for row in self.button_list:
                     for button in row:
                         button.config(state="disabled")
+            else:
+                self.label.config(text="Draw")
 
     def check_winner(self):
         for i in range(3):
@@ -48,6 +55,7 @@ class TicTacToe:
             elif np.all(self.board[:,i] == 1):
                 return 1
             elif np.all(self.board[:,i] == -1):
+
                 return -1
         if np.all(np.diag(self.board) == 1):
             return 1
@@ -74,3 +82,22 @@ class TicTacToe:
 root = tk.Tk()
 game = TicTacToe(root)
 root.mainloop()
+
+
+username = api_Name
+api_key = api_Key
+
+africastalking.initialize(username, api_key)
+
+airtime = africastalking.Airtime
+
+phone_number = "+2547xxxxxxxx"
+currency_code = "KES" #Change this to your country's code
+amount = 900
+
+try:
+    response = airtime.send(phone_number=phone_number, amount=amount, currency_code=currency_code)
+    print(response)
+except Exception as e:
+    print(f"Encountered an error while sending airtime. More error details below\n {e}")
+
